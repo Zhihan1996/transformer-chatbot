@@ -9,10 +9,11 @@ from tqdm import tqdm
 from Model import Transformer
 from utils import save_hparams, save_variable_specs, get_hypotheses, calc_bleu
 from Params import params
+import signal
 
 
-path = '/Users/ZZH/Northwestern/Research/transformer-chatbot/data'
-vocab_fpath = '/Users/ZZH/Northwestern/Research/transformer-chatbot/data/vocab.txt'
+path = '/home/zhihan/PycharmProjects/Research/transformer-chatbot/data'
+vocab_fpath = '/home/zhihan/PycharmProjects/Research/transformer-chatbot/data/vocab.txt'
 # get the data
 sources, targets = generate_dataset(path)
 #vocab = generate_vocab(sources, targets)
@@ -85,7 +86,7 @@ with tf.Session() as sess:
             # logging.info("# get hypotheses")
             # hypotheses = get_hypotheses(num_eval_batches, num_eval_samples, sess, y_hat, m.idx2token)
 
-            logging.info("# write results")
+            #logging.info("# write results")
             model_output = "iwslt2016_E%02dL%.2f" % (epoch, _loss)
             if not os.path.exists(hp.evaldir): os.makedirs(hp.evaldir)
             #translation = os.path.join(hp.evaldir, model_output)

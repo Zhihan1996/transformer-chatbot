@@ -6,7 +6,7 @@ class hyperparams:
     lr = 0.0003
     warmup_steps = 4000
     logdir = "/Users/ZZH/Northwestern/Research/transformer-chatbot/model"
-    num_epochs = 20
+    num_epochs = 1
     evaldir = "/Users/ZZH/Northwestern/Research/transformer-chatbot/model"
     num_units = 512
     d_ff = 2048

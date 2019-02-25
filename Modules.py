@@ -270,7 +270,7 @@ def label_smoothing(inputs, epsilon=0.1):
 
 def positional_encoding(inputs,
                         maxlen,
-                        masking=False,
+                        masking=True,
                         scope="positional_encoding"):
     '''Sinusoidal Positional_Encoding. See 3.5
     inputs: 3d tensor. (N, T, E)

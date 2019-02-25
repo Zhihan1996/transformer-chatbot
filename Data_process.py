@@ -182,6 +182,8 @@ def input_fn(sources, targets, vocab_fpath, batch_size, shuffle=False):
               ([None], [None], (), ()))
     types = ((tf.int32, tf.int32, tf.string),
              (tf.int32, tf.int32, tf.int32, tf.string))
+    paddings = ((0, 0, ''),
+                (0, 0, 0, ''))
 
     dataset = tf.data.Dataset.from_generator(
         generator_fn,
@@ -189,10 +191,11 @@ def input_fn(sources, targets, vocab_fpath, batch_size, shuffle=False):
         output_types=types,
         args=(sources, targets, vocab_fpath))  # <- arguments for generator_fn. converted to np string arrays
 
-    if shuffle: # for training
-        dataset = dataset.shuffle(128*batch_size)
+    # if shuffle: # for training
+    #     dataset = dataset.shuffle(128*batch_size)
 
-    dataset = dataset.repeat()  # iterate forever
+    dataset = dataset.repeat()  # iterate forever..
+    dataset = dataset.padded_batch(batch_size, shapes, paddings).prefetch(1)
 
     return dataset
 

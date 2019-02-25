@@ -8,10 +8,10 @@ class params:
     parser.add_argument('--eval_batch_size', default=128, type=int)
     parser.add_argument('--lr', default=0.0003, type=float, help="learning rate")
     parser.add_argument('--warmup_steps', default=4000, type=int)
-    parser.add_argument('--logdir', default="/Users/ZZH/Northwestern/Research/transformer-chatbot/model", help="log directory")
-    parser.add_argument('--num_epochs', default=30, type=int)
-    parser.add_argument('--evaldir', default="/Users/ZZH/Northwestern/Research/transformer-chatbot/model", help="evaluation dir")
-    parser.add_argument('--vocab_fpath', default="/Users/ZZH/Northwestern/Research/transformer-chatbot/data/vocab.txt", help="evaluation dir")
+    parser.add_argument('--logdir', default="/home/zhihan/PycharmProjects/Research/transformer-chatbot/model", help="log directory")
+    parser.add_argument('--num_epochs', default=1, type=int)
+    parser.add_argument('--evaldir', default="/home/zhihan/PycharmProjects/Research/transformer-chatbot/model", help="evaluation dir")
+    parser.add_argument('--vocab_fpath', default="/home/zhihan/PycharmProjects/Research/transformer-chatbot/data/vocab.txt", help="evaluation dir")
 
     parser.add_argument('--num_units', default=512, type=int,
                         help="hidden dimension of encoder/decoder")
