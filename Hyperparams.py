@@ -5,9 +5,9 @@ class hyperparams:
     eval_batch_size = 128
     lr = 0.0003
     warmup_steps = 4000
-    logdir = "/Users/ZZH/Northwestern/Research/transformer-chatbot/model"
-    num_epochs = 1
-    evaldir = "/Users/ZZH/Northwestern/Research/transformer-chatbot/model"
+    logdir = "./model"
+    num_epochs = 25
+    evaldir = "./model"
     num_units = 512
     d_ff = 2048
     num_blocks = 6
@@ -15,5 +15,6 @@ class hyperparams:
     maxlen = 20
     dropout_rate = 0.1
     smoothing = 0.1
-    vocab_fpath = "/Users/ZZH/Northwestern/Research/transformer-chatbot/data/vocab.txt"
+    vocab_fpath = "./data/vocab.txt"
+
 

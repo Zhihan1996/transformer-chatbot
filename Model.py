@@ -150,6 +150,20 @@ class Transformer:
 
         return loss, train_op, global_step, summaries
 
+    def infer(self, xs, ys):
+        decoder_inputs, y, y_seqlen, sents2 = ys
+        memory, _ = self.encode(xs, False)
+
+        for _ in range(self.hp.maxlen):
+            _, y_hat, y, sents2 = self.decode(ys, memory, False)
+            if tf.reduce_sum(y_hat, 1) == self.token2idx["<PAD>"]: break
+
+            _decoder_inputs = tf.concat((decoder_inputs, y_hat), 1)
+            ys = (_decoder_inputs, y, y_seqlen, sents2)
+
+        return y_hat
+
+
     def eval(self, xs, ys):
         '''Predicts autoregressively
         At inference, input ys is ignored.

@@ -12,8 +12,8 @@ from Params import params
 import signal
 
 
-path = '/home/zhihan/PycharmProjects/Research/transformer-chatbot/data'
-vocab_fpath = '/home/zhihan/PycharmProjects/Research/transformer-chatbot/data/vocab.txt'
+path = './data'
+vocab_fpath = './data/vocab.txt'
 # get the data
 sources, targets = generate_dataset(path)
 #vocab = generate_vocab(sources, targets)

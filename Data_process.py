@@ -218,6 +218,10 @@ def get_batch(path, vocab_fpath, batch_size = hp.batch_size, shuffle=False):
     num_batches = calc_num_batches(len(sources), batch_size)
     return batches, num_batches, len(sources)
 
+def get_batch_evaluate(query, vocab_fpath):
+    targets = ''
+    batch = input_fn(query, targets, vocab_fpath, 1, shuffle=False)
+    return batch
 
 
 
