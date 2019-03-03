@@ -1,3 +1,4 @@
+import thulac
 import numpy as np
 from Hyperparams import hyperparams as hp
 from utils import *
@@ -20,8 +21,6 @@ def remove_punc(line):
     line = line.replace('¥', '')
     line = line.replace('@', '')
     line = line.replace('\n', '')
-    line = line.replace('(', '')
-    line = line.replace(')', '')
     return line
 
 
@@ -52,13 +51,15 @@ def generate_dataset(path='./data'):
 
     return sources, targets
 
-def generate_vocab(sources, targets, number_words=20000-4):
+def generate_vocab(sources, targets):
     vocab = {}
+
+    thu = thulac.thulac(seg_only=True)
 
     for i in range(len(sources)):
         item = sources[i]
         item = remove_punc(item)
-        for word in jieba.cut(item):
+        for word in thu.cut(item, text=True):
             if word not in vocab:
                 vocab[word] = 1
             else:
@@ -67,23 +68,60 @@ def generate_vocab(sources, targets, number_words=20000-4):
     for i in range(len(sources)):
         item = targets[i]
         item = remove_punc(item)
-        for word in jieba.cut(item):
+        for word in thu.cut(item, text=True):
             if word not in vocab:
                 vocab[word] = 1
             else:
                 vocab[word] += 1
 
     vocab_keys = list(vocab.keys())
+    vocab_values = list(vocab.values())
+    for i in range(len(vocab_keys)):
+        if vocab_values[i] == 1:
+            vocab.pop(vocab_keys[i])
+
+    vocab_keys = list(vocab.keys())
     for i in range(len(vocab_keys)):
         if vocab_keys[i].encode('UTF-8').isalnum():
             vocab.pop(vocab_keys[i])
 
-    if len(vocab) > number_words:
-        sort = sorted(vocab.items(), key=lambda item: item[1])
-        num_del = len(vocab) - number_words
-        to_del = sort[:num_del]
-        for item in to_del:
-            vocab.pop(item[0])
+    return vocab
+
+def generate_vocab(sources, targets):
+    vocab = {}
+
+    thu = thulac.thulac(seg_only=True)
+
+    for i in range(len(sources)):
+        item = sources[i]
+        item = remove_punc(item)
+        for phrase in thu.cut(item):
+            word = phrase[0]
+            if word not in vocab:
+                vocab[word] = 1
+            else:
+                vocab[word] += 1
+
+    for i in range(len(sources)):
+        item = targets[i]
+        item = remove_punc(item)
+        for phrase in thu.cut(item):
+            word = phrase[0]
+            if word not in vocab:
+                vocab[word] = 1
+            else:
+                vocab[word] += 1
+
+    vocab_keys = list(vocab.keys())
+    vocab_values = list(vocab.values())
+    for i in range(len(vocab_keys)):
+        if vocab_values[i] == 1:
+            vocab.pop(vocab_keys[i])
+
+    vocab_keys = list(vocab.keys())
+    for i in range(len(vocab_keys)):
+        if vocab_keys[i].encode('UTF-8').isalnum():
+            vocab.pop(vocab_keys[i])
 
     return vocab
 
@@ -122,11 +160,13 @@ def pad(data, length, vocab_fpath):
 # generator function
 def generator_fn(sources, targets, vocab_fpath):
     word2idx, idx2word = load_vocab(vocab_fpath)
+    thu = thulac.thulac(seg_only=True)
     for source, target in zip(sources, targets):
         x = []
         y = [2]
 
-        for word in jieba.cut(source):
+        for phrase in thu.cut(source):
+            word = phrase[0]
             x.append(word2idx.get(word, 1))
         x.append(3)
         if len(x) >= hp.maxlen:
@@ -135,7 +175,8 @@ def generator_fn(sources, targets, vocab_fpath):
         else:
             x = pad(x, hp.maxlen, vocab_fpath)
 
-        for word in jieba.cut(target):
+        for phrase in thu.cut(target):
+            word = phrase[0]
             y.append(word2idx.get(word, 1))
         y.append(3)
         if len(y) >= hp.maxlen:
@@ -147,6 +188,7 @@ def generator_fn(sources, targets, vocab_fpath):
         decoder_input, y = y[:-1], y[1:]
 
         yield (x, len(x), source), (decoder_input, y, len(y), target)
+
 
 def input_fn(sources, targets, vocab_fpath, batch_size, shuffle=False):
     '''Batchify data

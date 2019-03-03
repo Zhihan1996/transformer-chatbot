@@ -3,7 +3,6 @@ import jieba
 from Data_process import *
 from Model import Transformer
 from Hyperparams import hyperparams as hp
-from tqdm import tqdm
 
 vocab_fpath = './data/vocab.txt'
 
@@ -49,9 +48,9 @@ def inference(query):
     xs = (tf.constant(query_input), tf.constant(len(query_id)), tf.constant(query))
 
     # initialize a target sentence to run the model
-    y = [[i for i in range(20)]]
+    y = [[i for i in range(hp.maxlen-1)]]
     target = ''
-    decoder_inputs = np.ones(shape=[1,1],dtype='int32')
+    decoder_inputs = np.ones(shape=[1,1],dtype='int32') * word2idx.get('<S>')
     ys = (tf.constant(decoder_inputs), tf.constant(y), tf.constant(len(y[0])), tf.constant(target))
 
     # generate the input of model
@@ -75,20 +74,15 @@ def inference(query):
     # feed_dict = {x_1:query_input, x_2:len(query_id), x_3:query, y_1:decoder_inputs, y_2:y, y_3:len(y[0]), y_4:target}
 
     with tf.Session() as sess:
-        sess = tf.Session()
-        # init = tf.global_variables_initializer()
-        # sess.run(init)
-
-        print(sess.run(xs))
-        print(sess.run(ys))
 
 
-        # m = Transformer(hp)
-        # y_hat = m.infer(xs, ys)
-        #
-        # new_saver = tf.train.import_meta_graph('./model/iwslt2016_E25L1.98-88775.meta')
-        # new_saver.restore(sess, tf.train.latest_checkpoint('./model'))
-        # rep = sess.run(y_hat)
+        m = Transformer(hp)
+        y_hat = m.infer(xs, ys)
+
+        new_saver = tf.train.Saver()
+        # new_saver = tf.train.import_meta_graph('./model/iwslt2016_E25L1.84-88775.meta')
+        new_saver.restore(sess, tf.train.latest_checkpoint('./model'))
+        rep = sess.run(y_hat)
 
     #print(sess.run(xs))
     #print(sess.run(ys))
@@ -97,12 +91,10 @@ def inference(query):
     # rep = sess.run(y_hat)
     reply = ''
     for id in rep[0]:
-        if id == 1 or id == 4:
+        if id == word2idx.get('</S>') or id == word2idx.get('<PAD>'):
             break
         reply += idx2word.get(id)
 
     print(reply)
 
     # print(sess.run(y_hat, feed_dict=feed_dict))
-
-

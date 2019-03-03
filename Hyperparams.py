@@ -1,12 +1,12 @@
 class hyperparams:
 
-    vocab_size = 12487
+    vocab_size = 20000
     batch_size = 128
     eval_batch_size = 128
-    lr = 0.0003
+    lr = 0.00001
     warmup_steps = 4000
     logdir = "./model"
-    num_epochs = 25
+    num_epochs = 35
     evaldir = "./model"
     num_units = 512
     d_ff = 2048

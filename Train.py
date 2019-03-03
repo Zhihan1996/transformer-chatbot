@@ -14,19 +14,6 @@ import signal
 
 path = './data'
 vocab_fpath = './data/vocab.txt'
-# get the data
-sources, targets = generate_dataset(path)
-#vocab = generate_vocab(sources, targets)
-word2idx, idx2word = load_vocab(vocab_fpath)
-# X, Y = create_data(sources, targets, word2idx)
-
-
-# construct dataset and iterator
-# dataset = tf.data.Dataset.from_tensor_slices({"X":X, "Y":Y})
-# batched_dataset = dataset.batch(64)
-#
-# iterator = batched_dataset.make_one_shot_iterator()
-# next_element = iterator.get_next()
 
 logging.basicConfig(level=logging.INFO)
 
@@ -39,9 +26,7 @@ save_hparams(hp, hp.logdir)
 
 logging.info("# Prepare train/eval batches")
 train_batches, num_train_batches, num_train_samples = get_batch(path, vocab_fpath, hp.batch_size, shuffle=True)
-# eval_batches, num_eval_batches, num_eval_samples = get_batch(hp.eval1, hp.eval2, 100000, 100000, vocab, hp.batch_size, shuffle=False)
 
-# create a iterator of the correct shape and type
 iter = tf.data.Iterator.from_structure(train_batches.output_types, train_batches.output_shapes)
 xs, ys = iter.get_next()
 
@@ -75,6 +60,7 @@ with tf.Session() as sess:
         epoch = math.ceil(_gs / num_train_batches)
         summary_writer.add_summary(_summary, _gs)
 
+
         if _gs and _gs % num_train_batches == 0:
             logging.info("epoch {} is done".format(epoch))
             _loss = sess.run(loss) # train loss
@@ -87,7 +73,7 @@ with tf.Session() as sess:
             # hypotheses = get_hypotheses(num_eval_batches, num_eval_samples, sess, y_hat, m.idx2token)
 
             #logging.info("# write results")
-            model_output = "iwslt2016_E%02dL%.2f" % (epoch, _loss)
+            model_output = "zzh2019_E%02dL%.2f" % (epoch, _loss)
             if not os.path.exists(hp.evaldir): os.makedirs(hp.evaldir)
             #translation = os.path.join(hp.evaldir, model_output)
             # with open(translation, 'w') as fout:
