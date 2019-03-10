@@ -1,5 +1,6 @@
 import tensorflow as tf
 import jieba
+import numpy as np
 from Data_process import *
 from Model import Transformer
 from Hyperparams import hyperparams as hp
@@ -60,8 +61,8 @@ if __name__ == "__main__":
     print(a)
     while True:
         query = input('Enter Query: ')
-        if len(query) == 0:
-            sys.exit(0)
+        if(len(query) == 0):
+            continue
 
         query_input, x_length, query, decoder_inputs, y, y_length, target = generate_input(query)
         feed_dict = {x_1: query_input, x_2: x_length, x_3: query, y_1: decoder_inputs, y_2: y, y_3: y_length, y_4: target}

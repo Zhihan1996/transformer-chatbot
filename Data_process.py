@@ -1,9 +1,7 @@
-import numpy as np
 from Hyperparams import hyperparams as hp
 from utils import *
 import jieba
-
-
+import numpy as np
 
 # remove punctuations
 def remove_punc(line):
@@ -36,19 +34,21 @@ def generate_dataset(path='./data'):
 
     sources = []
     targets = []
+
     for i in range(len(sentences)):
         if sentences[i][0] == 'E':
-            sources.append(remove_punc(sentences[i+1][2:-1]))
-            targets.append(remove_punc(sentences[i+2][2:-1]))
+            if '小通' not in sentences[i+1] and '小通' not in sentences[i+2]:
+                sources.append(remove_punc(sentences[i+1][2:-1]))
+                targets.append(remove_punc(sentences[i+2][2:-1]))
 
-    dataset2_sources = open(path + '/train.ask.tsv')
-    dataset2_targets = open(path + '/train.answer.tsv')
-
-    for item in dataset2_sources:
-        sources.append(remove_punc(item))
-
-    for item in dataset2_targets:
-        targets.append(remove_punc(item))
+    # dataset2_sources = open(path + '/train.ask.tsv')
+    # dataset2_targets = open(path + '/train.answer.tsv')
+    #
+    # for item in dataset2_sources:
+    #     sources.append(remove_punc(item))
+    #
+    # for item in dataset2_targets:
+    #     targets.append(remove_punc(item))
 
     return sources, targets
 

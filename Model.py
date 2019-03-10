@@ -115,9 +115,14 @@ class Transformer:
         # Final linear projection (embedding weights are shared)
         weights = tf.transpose(self.embeddings) # (hidden_units, vocab_size)
         logits = tf.einsum('ntd,dk->ntk', dec, weights) # (N, T2, vocab_size)
+        # set values corresponding to unk = 0
+        logits_first = tf.expand_dims(logits[:,:,0], 2)
+        zeros = tf.zeros_like(logits_first)
+        logits = tf.concat([logits_first, zeros, logits[:,:,2:]], axis=2)
         y_hat = tf.to_int32(tf.argmax(logits, axis=-1))
 
         return logits, y_hat, y, sents2
+
 
     def train(self, xs, ys):
         '''
