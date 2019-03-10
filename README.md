@@ -86,5 +86,5 @@ After 20 epochs:
 
 After 90 epochs:
 
-![demo3](./demos/demo3.png)
+![demo3](./demos/demo0.png)
 
