@@ -42,7 +42,7 @@ computation of multi-head attention and normalization.
 To train a model using the data(including sentence pairs and vocabulary) I uploaded, is very easy. Run:
 
 ```
-									python Train.py
+python Train.py
 ```
 
 
@@ -65,7 +65,7 @@ You model would be stored in ./model after every epoch. If you are only interest
 Once the model is pretrained and stored in ./model, you could chat with your bot by run:
 
 ```
-									python Chat.py
+python Chat.py
 ```
 
 Directly type  "control + c" to finish the chat. 
