@@ -69,3 +69,22 @@ python Chat.py
 ```
 
 Directly type  "control + c" to finish the chat. 
+
+
+
+## 4. Demo
+
+I trained this model for 90 epochs, I save the model after every epoch. Here are some demos of the evolution of my model.
+
+After 1 epoch:
+
+![demo1](/Users/ZZH/Northwestern/Research/transformer-chatbot/demos/demo1.png)
+
+After 20 epochs:
+
+ ![demo2](/Users/ZZH/Northwestern/Research/transformer-chatbot/demos/demo2.png)
+
+After 90 epochs:
+
+![demo3](/Users/ZZH/Northwestern/Research/transformer-chatbot/demos/demo3.png)
+
