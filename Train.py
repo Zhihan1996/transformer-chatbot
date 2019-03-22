@@ -40,7 +40,7 @@ loss, train_op, global_step, train_summaries = m.train(xs, ys)
 # y_hat = m.infer(xs, ys)
 
 logging.info("# Session")
-saver = tf.train.Saver(max_to_keep=hp.num_epochs)
+saver = tf.train.Saver(max_to_keep=1)
 with tf.Session() as sess:
     ckpt = tf.train.latest_checkpoint(hp.logdir)
     if ckpt is None:
@@ -74,6 +74,7 @@ with tf.Session() as sess:
 
             #logging.info("# write results")
             model_output = "zzh2019_E%02dL%.2f" % (epoch, _loss)
+            print ("epoch: %03d, loss: %.2f" % (epoch, _loss))
             if not os.path.exists(hp.evaldir): os.makedirs(hp.evaldir)
             #translation = os.path.join(hp.evaldir, model_output)
             # with open(translation, 'w') as fout:

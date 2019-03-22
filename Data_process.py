@@ -26,7 +26,7 @@ def remove_punc(line):
 # generate sets of sources and targets from raw data
 # sources and targets are basically lists of strings
 def generate_dataset(path='./data'):
-    dataset1 = open(path + '/xiaohuangji50w_nofenci.conv')
+    dataset1 = open(path + '/xiaohuangji50w_nofenci.conv', encoding="utf-8")
 
     sentences = []
     for i in dataset1:
@@ -92,7 +92,7 @@ def generate_vocab(sources, targets, number_words=20000-4):
 # add four specifc words to the top of vocab
 def save_vocab(vocab, path=''):
     vocab_keys = list(vocab.keys())
-    file = open(path+'vocab.txt', 'w')
+    file = open(path+'vocab.txt', 'w', encoding="utf-8")
     file.write('<PAD>' + '\n')
     file.write('<UNK>' + '\n')
     file.write('<S>' + '\n')
@@ -104,7 +104,7 @@ def save_vocab(vocab, path=''):
 
 # construct index2word and word2index from giving vocab
 def load_vocab(vocab_fpath):
-    vocab = [line for line in open(vocab_fpath, 'r').read().splitlines()]
+    vocab = [line for line in open(vocab_fpath, 'r', encoding="utf-8").read().splitlines()]
     word2idx = {word: idx for idx, word in enumerate(vocab)}
     idx2word = {idx: word for idx, word in enumerate(vocab)}
     return word2idx, idx2word
